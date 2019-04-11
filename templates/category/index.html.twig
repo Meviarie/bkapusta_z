@@ -1,11 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    {{ 'title.task_list'|trans }}
+    {{ 'title.category_list'|trans }}
 {% endblock %}
 
 {% block body %}
-    <h1>{{ 'title.task_list'|trans }}</h1>
+    <h1>{{ 'title.category_list'|trans }}</h1>
+
     {% if pagination is defined and pagination|length %}
 
         <div class="navigation text-center">
@@ -26,21 +27,19 @@
             <tbody>
             {% for task in pagination %}
                 <tr>
-                    <td>{{ task.id }}</td>
+                    <td>{{ task.category.id }}</td>
                     <td>{{ task.createdAt|localizeddate }}</td>
                     <td>{{ task.updatedAt|localizeddate }}</td>
-                    <td>{{ task.title }}</td>
                     <td>{{ task.category.title }}</td>
                     <td>
-                        <a href="{{ url('task_view', {id: task.id}) }}" title="{{ 'action.view'|trans }}">
+                        <a href="{{ url('category_view', {id: category.id}) }}" title="{{ 'action.view'|trans }}">
                             {{ 'action.view'|trans }}
                         </a>
-                        <a href="{{ url('task_edit', {id: task.id}) }}" title="{{ 'action.edit'|trans }}">
-                            {{ 'action.edit'|trans }}
-                        </a>
-                        <a href="{{ url('task_delete', {id: task.id}) }}" title="{{ 'action.delete'|trans }}">
-                            {{ 'action.delete'|trans }}
-                        </a>
+                        {% if not category.tasks|length %}
+                            <a href="{{ url('category_delete', {id: category.id}) }}" title="{{ 'action.delete'|trans }}">
+                                {{ 'action.delete'|trans }}
+                            </a>
+                        {% endif %}
                     </td>
                 </tr>
             {% endfor %}
